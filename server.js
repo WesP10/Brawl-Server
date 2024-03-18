@@ -31,10 +31,11 @@ class BrawlAccount {
 }
 
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "Codingiscool",
-    database: "R6Stats"
+    host: "dpg-cnsbnm5jm4es73b01mq0-a",
+    user: "clarksinstance_user",
+    password: "UuGad04IBrWrGOHnIVtmPlNbeqyA7urd",
+    database: "clarksinstance"
+    // password: "Codingiscool"
     //insecureAuth: true
     //tableName: "stats" - ID, name, kd, rank, level, gamesPlayed
 });
