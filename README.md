@@ -1,6 +1,6 @@
-# R6Stats Node.js Server
+# Brawl Stars Node.js Server
 
-This is a Node.js server for the R6Stats application. It provides endpoints to fetch player stats and all stats from a MySQL database.
+This is a Node.js server for the BrawlSTars application. It provides endpoints to fetch player stats and all stats from a personal MySQL database and Brawl Stars API.
 
 ## Getting Started
 
