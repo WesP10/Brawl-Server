@@ -2,7 +2,6 @@
 //It will connect to the database and retrieve the stats for the user.
 //It will also display the stats on the website.
 const Pool = require('pg').Pool;
-const cors = require('cors');
 const express = require('express');
 const BrawlStars = require("brawlstars.js");
 const app = express();
@@ -53,9 +52,9 @@ async function getPlayerStats(){
     let player = await client.getPlayer(playerId);
     return player;
 }
-app.use(cors());
 
 app.get('/stats/:playerId', async(req, res)=>{
+    res.header("Access-Control-Allow-Origin", "*");
     playerId = '#'+req.params.playerId;
     console.log(req.params.playerId);
     await getPlayerStats().then(stats => {
@@ -74,18 +73,6 @@ app.get('/stats/all', function(req, res){
         if(err) throw err;
         console.log(result);
         res.send(JSON.stringify(result));
-    });
-});
-app.post('/add/:playerId', async(req, res)=>{
-    playerId = '#'+req.params.playerId;
-    await getPlayerStats().then(stats => {
-        let brawlAccount = new BrawlAccount(stats.name, stats.tag, stats.icon, stats.trophies, stats.highestTrophies, stats.expLevel, stats.totalVictories, stats.trioVictories, stats.soloVictories, stats.duoVictories, stats.bestRoboRumbleTime, stats.bestTimeAsBigBrawler, stats.club, stats.nameColor);
-        var sqlQuery = "INSERT INTO BrawlAccounts (name, tag, icon, trophies, highestTrophies, expLevel, totalVictories, victories, soloVictories, duoVictories, bestRoboRumbleTime, bestTimeAsBigBrawler, club, color) VALUES ('"+brawlAccount.name+"', '"+brawlAccount.tag+"', '"+brawlAccount.icon+"', "+brawlAccount.trophies+", "+brawlAccount.highestTrophies+", "+brawlAccount.expLevel+", "+brawlAccount.totalVictories+", "+brawlAccount.victories+", "+brawlAccount.soloVictories+", "+brawlAccount.duoVictories+", "+brawlAccount.bestRoboRumbleTime+", "+brawlAccount.bestTimeAsBigBrawler+", '"+brawlAccount.club.name+"', '"+brawlAccount.color+"')";
-        pool.query(sqlQuery, function(err, result){
-            if(err) throw err;
-            console.log(result);
-            res.send(JSON.stringify(brawlAccount));
-        });
     });
 });
 //Port set to 10000
