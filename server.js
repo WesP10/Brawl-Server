@@ -71,7 +71,7 @@ app.get('/stats/all', function(req, res){
         res.send(JSON.stringify(result));
     });
 });
-app.get('/add/:playerId', async(req, res)=>{
+app.post('/add/:playerId', async(req, res)=>{
     playerId = '#'+req.params.playerId;
     await getPlayerStats().then(stats => {
         let brawlAccount = new BrawlAccount(stats.name, stats.tag, stats.icon, stats.trophies, stats.highestTrophies, stats.expLevel, stats.totalVictories, stats.trioVictories, stats.soloVictories, stats.duoVictories, stats.bestRoboRumbleTime, stats.bestTimeAsBigBrawler, stats.club, stats.nameColor);
