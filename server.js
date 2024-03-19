@@ -2,6 +2,7 @@
 //It will connect to the database and retrieve the stats for the user.
 //It will also display the stats on the website.
 const Pool = require('pg').Pool;
+const cors = require('cors');
 const express = require('express');
 const BrawlStars = require("brawlstars.js");
 const app = express();
@@ -52,10 +53,7 @@ async function getPlayerStats(){
     let player = await client.getPlayer(playerId);
     return player;
 }
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    next();
-});
+app.use(cors());
 
 app.get('/stats/:playerId', async(req, res)=>{
     playerId = '#'+req.params.playerId;
@@ -66,7 +64,6 @@ app.get('/stats/:playerId', async(req, res)=>{
     });
 });
 app.get('/stats/all', function(req, res){
-    res.header("Access-Control-Allow-Origin", "*");
     var sqlQuery = "SELECT * FROM stats";
     pool.query(sqlQuery, function(err, result){
         if(err) throw err;
@@ -74,9 +71,7 @@ app.get('/stats/all', function(req, res){
         res.send(JSON.stringify(result));
     });
 });
-//route to add a specif players stats to the database
 app.get('/add/:playerId', async(req, res)=>{
-    res.header("Access-Control-Allow-Origin", "*");
     playerId = '#'+req.params.playerId;
     await getPlayerStats().then(stats => {
         let brawlAccount = new BrawlAccount(stats.name, stats.tag, stats.icon, stats.trophies, stats.highestTrophies, stats.expLevel, stats.totalVictories, stats.trioVictories, stats.soloVictories, stats.duoVictories, stats.bestRoboRumbleTime, stats.bestTimeAsBigBrawler, stats.club, stats.nameColor);
@@ -88,7 +83,7 @@ app.get('/add/:playerId', async(req, res)=>{
         });
     });
 });
-//Port set to 3030
-app.listen(3030, function(){
+//Port set to 10000
+app.listen(10000, function(){
     console.log('Server is running on port ');
 });
