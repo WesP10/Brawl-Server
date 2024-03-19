@@ -30,7 +30,7 @@ class BrawlAccount {
 }
 
 const pool = new Pool({
-    host: "postgres://clarksinstance_user:UuGad04IBrWrGOHnIVtmPlNbeqyA7urd@dpg-cnsbnm5jm4es73b01mq0-a.oregon-postgres.render.com/clarksinstance",
+    host: "dpg-cnsbnm5jm4es73b01mq0-a",
     user: "clarksinstance_user",
     password: "UuGad04IBrWrGOHnIVtmPlNbeqyA7urd",
     database: "clarksinstance",
