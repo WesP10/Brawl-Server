@@ -53,13 +53,13 @@ async function getPlayerStats(){
     return player;
 }
 app.use(function(req, res, next){
-    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
+    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:10000");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
 
 app.get('/stats/:playerId', async(req, res)=>{
-    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
+    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:10000");
     playerId = '#'+req.params.playerId;
     console.log(req.params.playerId);
     await getPlayerStats().then(stats => {
