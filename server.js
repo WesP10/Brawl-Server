@@ -48,18 +48,10 @@ pool.query(sqlQuery, (err, res) => {
     }
     pool.end();
 });
-con.connect(function(err) {
-    if (err) {
-        console.error('Error connecting to MySQL:', err);
-        return;
-    }
-    console.log('Connected to MySQL');
-});
 async function getPlayerStats(){
     let player = await client.getPlayer(playerId);
     return player;
 }
-
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     next();
@@ -76,7 +68,7 @@ app.get('/stats/:playerId', async(req, res)=>{
 app.get('/stats/all', function(req, res){
     res.header("Access-Control-Allow-Origin", "*");
     var sqlQuery = "SELECT * FROM stats";
-    con.query(sqlQuery, function(err, result){
+    pool.query(sqlQuery, function(err, result){
         if(err) throw err;
         console.log(result);
         res.send(JSON.stringify(result));
