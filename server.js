@@ -39,7 +39,7 @@ const pool = new Pool({
     //insecureAuth: true
     //tableName: "stats" - ID, name, kd, rank, level, gamesPlayed
 });
-var sqlQuery = "CREATE TABLE BrawlAccounts (id SERIAL PRIMARY KEY, name VARCHAR(255), tag VARCHAR(10), icon VARCHAR(255), trophies INT, highestTrophies INT, expLevel INT, totalVictories INT, victories INT, soloVictories INT, duoVictories INT, bestRoboRumbleTime INT, bestTimeAsBigBrawler INT, club VARCHAR(255), color VARCHAR(50));";
+var sqlQuery = "DROP TABLE IF EXISTS BrawlAccounts; CREATE TABLE BrawlAccounts (id SERIAL PRIMARY KEY, name VARCHAR(255), tag VARCHAR(10), icon VARCHAR(255), trophies INT, highestTrophies INT, expLevel INT, totalVictories INT, victories INT, soloVictories INT, duoVictories INT, bestRoboRumbleTime INT, bestTimeAsBigBrawler INT, club VARCHAR(255), color VARCHAR(50));";
 pool.query(sqlQuery, (err, res) => {
     if (err) {
         console.error('Error executing query', err.stack);
