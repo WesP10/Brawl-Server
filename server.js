@@ -76,6 +76,7 @@ app.get('/stats/all', function(req, res){
 });
 //route to add a specif players stats to the database
 app.get('/add/:playerId', async(req, res)=>{
+    res.header("Access-Control-Allow-Origin", "*");
     playerId = '#'+req.params.playerId;
     await getPlayerStats().then(stats => {
         let brawlAccount = new BrawlAccount(stats.name, stats.tag, stats.icon, stats.trophies, stats.highestTrophies, stats.expLevel, stats.totalVictories, stats.trioVictories, stats.soloVictories, stats.duoVictories, stats.bestRoboRumbleTime, stats.bestTimeAsBigBrawler, stats.club, stats.nameColor);
@@ -83,7 +84,7 @@ app.get('/add/:playerId', async(req, res)=>{
         pool.query(sqlQuery, function(err, result){
             if(err) throw err;
             console.log(result);
-            res.send(JSON.stringify(result));
+            res.send(JSON.stringify(brawlAccount));
         });
     });
 });
