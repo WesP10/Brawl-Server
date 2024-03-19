@@ -5,7 +5,7 @@ var mysql = require('mysql2');
 const express = require('express');
 const BrawlStars = require("brawlstars.js");
 const app = express();
-const port = 3306;
+const port = 5342;
 
 const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImY1ZjU3OGQ0LTNmOGEtNDQxMS05YTYxLTZlZmY2ZTg1ODQyYyIsImlhdCI6MTcxMDc5OTM0MCwic3ViIjoiZGV2ZWxvcGVyL2JhMWU1OTY2LTBkMmEtZGExMy1iM2JiLWI3NjY5Nzk4Mzg4YyIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiNDQuMjI2LjE0NS4yMTMiLCI1NC4xODcuMjAwLjI1NSIsIjM0LjIxMy4yMTQuNTUiLCIzNS4xNjQuOTUuMTU2IiwiNDQuMjMwLjk1LjE4MyJdLCJ0eXBlIjoiY2xpZW50In1dfQ.YMrq7oW1Xx2DMUS1Iy4K4iJVcekojr710FN7BE-Rw1xo6qLRp19aF4Y7ezMJRpIf-w94eDrKyZ53wJOsyuQYzg';
 let playerId = '#2JOL2OQQR';
