@@ -76,5 +76,5 @@ app.get('/stats/all', function(req, res){
 });
 //Port set to 3030
 app.listen(3030, function(){
-    console.log('Server is running on port '+port);
+    console.log('Server is running on port ');
 });
