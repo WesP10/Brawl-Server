@@ -1,11 +1,10 @@
 //Purpose: This file is the server for the BrawlStatsSite.
 //It will connect to the database and retrieve the stats for the user.
 //It will also display the stats on the website.
-var mysql = require('mysql2');
+const Pool = require('pg').Pool;
 const express = require('express');
 const BrawlStars = require("brawlstars.js");
 const app = express();
-const port = 5342;
 
 const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImY1ZjU3OGQ0LTNmOGEtNDQxMS05YTYxLTZlZmY2ZTg1ODQyYyIsImlhdCI6MTcxMDc5OTM0MCwic3ViIjoiZGV2ZWxvcGVyL2JhMWU1OTY2LTBkMmEtZGExMy1iM2JiLWI3NjY5Nzk4Mzg4YyIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiNDQuMjI2LjE0NS4yMTMiLCI1NC4xODcuMjAwLjI1NSIsIjM0LjIxMy4yMTQuNTUiLCIzNS4xNjQuOTUuMTU2IiwiNDQuMjMwLjk1LjE4MyJdLCJ0eXBlIjoiY2xpZW50In1dfQ.YMrq7oW1Xx2DMUS1Iy4K4iJVcekojr710FN7BE-Rw1xo6qLRp19aF4Y7ezMJRpIf-w94eDrKyZ53wJOsyuQYzg';
 let playerId = '#2JOL2OQQR';
@@ -30,14 +29,24 @@ class BrawlAccount {
     }
 }
 
-var con = mysql.createConnection({
-    host: "dpg-cnsbnm5jm4es73b01mq0-a",
+const pool = new Pool({
+    host: "postgres://clarksinstance_user:UuGad04IBrWrGOHnIVtmPlNbeqyA7urd@dpg-cnsbnm5jm4es73b01mq0-a.oregon-postgres.render.com/clarksinstance",
     user: "clarksinstance_user",
     password: "UuGad04IBrWrGOHnIVtmPlNbeqyA7urd",
-    database: "clarksinstance"
+    database: "clarksinstance",
+    port: '5432'
     // password: "Codingiscool"
     //insecureAuth: true
     //tableName: "stats" - ID, name, kd, rank, level, gamesPlayed
+});
+var sqlQuery = "CREATE TABLE BrawlAccounts (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), tag VARCHAR(10), icon VARCHAR(255), trophies INT, highestTrophies INT, expLevel INT, totalVictories INT, victories INT, soloVictories INT, duoVictories INT, bestRoboRumbleTime INT, bestTimeAsBigBrawler INT, club VARCHAR(255), color VARCHAR(50));";
+pool.query(sqlQuery, (err, res) => {
+    if (err) {
+        console.error('Error executing query', err.stack);
+    } else {
+        console.log('Successfully executed query');
+    }
+    pool.end();
 });
 con.connect(function(err) {
     if (err) {
@@ -74,6 +83,6 @@ app.get('/stats/all', function(req, res){
     });
 });
 
-app.listen(port, function(){
+app.listen(3030, function(){
     console.log('Server is running on port '+port);
 });
