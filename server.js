@@ -54,7 +54,7 @@ async function getPlayerStats(){
 }
 
 app.get('/stats/:playerId', async(req, res)=>{
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
     playerId = '#'+req.params.playerId;
     console.log(req.params.playerId);
     await getPlayerStats().then(stats => {
