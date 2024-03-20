@@ -54,12 +54,15 @@ async function getPlayerStats(){
     let player = await client.getPlayer(playerId);
     return player;
 }
-app.use(function(req, res, next){
-    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
+app.options('*', (req, res) => {
+    // Set CORS headers
+    res.set('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
+    res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+    
+    // Send response
+    res.status(200).send();
 });
-
 app.get('/stats/:playerId', async(req, res)=>{
     res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
     playerId = '#'+req.params.playerId;
