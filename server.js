@@ -73,11 +73,22 @@ app.get('/stats/:playerId', async(req, res)=>{
     });
 });
 app.get('/stats/all', function(req, res){
+    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
     var sqlQuery = "SELECT * FROM stats";
     pool.query(sqlQuery, function(err, result){
         if(err) throw err;
         console.log(result);
         res.send(JSON.stringify(result));
+    });
+});
+app.get('/stats/add/:playerId', async(req, res) => {
+    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
+    playerId = '#'+req.params.playerId;
+    console.log(req.params.playerId);
+    await getPlayerStats().then(stats => {
+        let brawlAccount = new BrawlAccount(stats.name, stats.tag, stats.icon, stats.trophies, stats.highestTrophies, stats.expLevel, stats.totalVictories, stats.trioVictories, stats.soloVictories, stats.duoVictories, stats.bestRoboRumbleTime, stats.bestTimeAsBigBrawler, stats.club, stats.nameColor);
+        addToDB(brawlAccount);
+        res.send(JSON.stringify(brawlAccount));
     });
 });
 function addToDB(brawlAccount){
