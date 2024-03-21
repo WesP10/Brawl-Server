@@ -5,6 +5,7 @@ const Pool = require('pg').Pool;
 const express = require('express');
 const BrawlStars = require("brawlstars.js");
 const xml2js = require('xml2js');
+const cors = require('cors');
 const app = express();
 
 const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImY1ZjU3OGQ0LTNmOGEtNDQxMS05YTYxLTZlZmY2ZTg1ODQyYyIsImlhdCI6MTcxMDc5OTM0MCwic3ViIjoiZGV2ZWxvcGVyL2JhMWU1OTY2LTBkMmEtZGExMy1iM2JiLWI3NjY5Nzk4Mzg4YyIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiNDQuMjI2LjE0NS4yMTMiLCI1NC4xODcuMjAwLjI1NSIsIjM0LjIxMy4yMTQuNTUiLCIzNS4xNjQuOTUuMTU2IiwiNDQuMjMwLjk1LjE4MyJdLCJ0eXBlIjoiY2xpZW50In1dfQ.YMrq7oW1Xx2DMUS1Iy4K4iJVcekojr710FN7BE-Rw1xo6qLRp19aF4Y7ezMJRpIf-w94eDrKyZ53wJOsyuQYzg';
@@ -54,17 +55,8 @@ async function getPlayerStats(){
     let player = await client.getPlayer(playerId);
     return player;
 }
-app.options('*', (req, res) => {
-    // Set CORS headers
-    res.set('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
-    res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.set('Access-Control-Allow-Headers', 'Content-Type');
-    
-    // Send response
-    res.status(200).send();
-});
+app.use(cors());
 app.get('/stats/:playerId', async(req, res)=>{
-    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
     playerId = '#'+req.params.playerId;
     console.log(req.params.playerId);
     await getPlayerStats().then(stats => {
@@ -73,7 +65,6 @@ app.get('/stats/:playerId', async(req, res)=>{
     });
 });
 app.get('/stats/all', function(req, res){
-    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
     var sqlQuery = "SELECT * FROM stats";
     pool.query(sqlQuery, function(err, result){
         if(err) throw err;
@@ -82,7 +73,6 @@ app.get('/stats/all', function(req, res){
     });
 });
 app.get('/stats/add/:playerId', async(req, res) => {
-    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
     playerId = '#'+req.params.playerId;
     console.log(req.params.playerId);
     await getPlayerStats().then(stats => {
