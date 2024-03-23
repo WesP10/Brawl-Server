@@ -67,8 +67,7 @@ app.get('/all', function(req, res){
     var sqlQuery = "SELECT * FROM BrawlAccounts;";
     pgClient.query(sqlQuery, function(err, result){
         if(err) throw err;
-        console.log(result);
-        res.send(result);
+        res.send(result.rows);
     });
 });
 app.get('/stats/add/:playerId', async(req, res) => {
