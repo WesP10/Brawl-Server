@@ -40,7 +40,6 @@ pgClient.query(sqlQuery, (err, res) => {
     } else {
         console.log('Successfully executed query');
     }
-    pgClient.end();
 });
 async function getPlayerStats(){
     let player = await client.getPlayer(playerId);
