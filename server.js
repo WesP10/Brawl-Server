@@ -80,7 +80,7 @@ function addToDB(brawlAccount){
         });
     }
 }
-async function checkIfExists(value){
+async function checkIfDoesNotExists(value){
     var sqlQuery = "SELECT * FROM BrawlAccounts WHERE tag = "+value+";";
     pgClient.query(sqlQuery, function(err, result){
         if(err) throw err;
