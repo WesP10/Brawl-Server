@@ -14,10 +14,7 @@ var connectionString = process.env.CONNECTIONSTRING;
 var pgClient = new Pool.Client(connectionString);
 pgClient.connect();
 const client = new BrawlStars.Client(token);
-
-app.use(cors({
-    origin: 'http://127.0.0.1:5500'
-  }));
+app.use(cors());
 class BrawlAccount {
     constructor(name, tag, icon, trophies, highestTrophies, expLevel, totalVictories, victories, soloVictories, duoVictories, bestRoboRumbleTime, bestTimeAsBigBrawler, club, color){
         this.name = name;
