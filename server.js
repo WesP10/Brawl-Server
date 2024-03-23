@@ -43,14 +43,6 @@ pgClient.query(sqlQuery, (err, res) => {
         console.log('Successfully executed query');
     }
 });
-sqlQuery = "ALTER TABLE BrawlAccounts ADD CONSTRAINT tag_unique UNIQUE (tag);"
-pgClient.query(sqlQuery, (err, res) => {
-    if (err) {
-        console.error('Error executing query', err.stack);
-    } else {
-        console.log('Successfully executed query');
-    }
-});
 async function getPlayerStats(){
     let player = await client.getPlayer(playerId);
     return player;
@@ -80,10 +72,23 @@ app.get('/stats/add/:playerId', async(req, res) => {
      });
 });
 function addToDB(brawlAccount){
-    var sqlQuery = "INSERT INTO BrawlAccounts (name, tag, icon, trophies, highestTrophies, expLevel, totalVictories, victories, soloVictories, duoVictories, bestRoboRumbleTime, bestTimeAsBigBrawler, club, color) VALUES ('"+brawlAccount.name+"', '"+brawlAccount.tag+"', '"+brawlAccount.icon+"', "+brawlAccount.trophies+", "+brawlAccount.highestTrophies+", "+brawlAccount.expLevel+", "+brawlAccount.totalVictories+", "+brawlAccount.victories+", "+brawlAccount.soloVictories+", "+brawlAccount.duoVictories+", "+brawlAccount.bestRoboRumbleTime+", "+brawlAccount.bestTimeAsBigBrawler+", '"+brawlAccount.club.name+"', '"+brawlAccount.color+"') ON CONFLICT (tag) DO NOTHING;";
-    pgClient.query(sqlQuery, function(err, result){ 
+    if(checkIfDoesNotExists(brawlAccount.tag)) {
+        var sqlQuery = "INSERT INTO BrawlAccounts (name, tag, icon, trophies, highestTrophies, expLevel, totalVictories, victories, soloVictories, duoVictories, bestRoboRumbleTime, bestTimeAsBigBrawler, club, color) VALUES ('"+brawlAccount.name+"', '"+brawlAccount.tag+"', '"+brawlAccount.icon+"', "+brawlAccount.trophies+", "+brawlAccount.highestTrophies+", "+brawlAccount.expLevel+", "+brawlAccount.totalVictories+", "+brawlAccount.victories+", "+brawlAccount.soloVictories+", "+brawlAccount.duoVictories+", "+brawlAccount.bestRoboRumbleTime+", "+brawlAccount.bestTimeAsBigBrawler+", '"+brawlAccount.club.name+"', '"+brawlAccount.color+"')";
+        pgClient.query(sqlQuery, function(err, result){ 
+            if(err) throw err;
+            console.log(result.rows);
+        });
+    }
+}
+async function checkIfExists(value){
+    var sqlQuery = "SELECT * FROM BrawlAccounts WHERE tag = "+value+";";
+    pgClient.query(sqlQuery, function(err, result){
         if(err) throw err;
-        console.log(result.rows);
+        if(result.rows.length > 0){
+            return false;
+        } else {
+            return true;
+        }
     });
 }
 //Port set to 10000
