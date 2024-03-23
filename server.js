@@ -72,30 +72,37 @@ app.get('/stats/add/:playerId', async(req, res) => {
      });
 });
 async function addToDB(brawlAccount) {
-    const checkQuery = "SELECT * FROM BrawlAccounts WHERE tag = $1;";
-    const checkResult = await pgClient.query(checkQuery, [brawlAccount.tag]);
-    if (checkResult.rows.length === 0) {
-        const insertQuery = `
-            INSERT INTO BrawlAccounts (name, tag, icon, trophies, highestTrophies, expLevel, totalVictories, victories, soloVictories, duoVictories, bestRoboRumbleTime, bestTimeAsBigBrawler, club, color) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`;
-        const values = [
-            brawlAccount.name, 
-            brawlAccount.tag, 
-            brawlAccount.icon, 
-            brawlAccount.trophies, 
-            brawlAccount.highestTrophies, 
-            brawlAccount.expLevel, 
-            brawlAccount.totalVictories, 
-            brawlAccount.victories, 
-            brawlAccount.soloVictories, 
-            brawlAccount.duoVictories, 
-            brawlAccount.bestRoboRumbleTime, 
-            brawlAccount.bestTimeAsBigBrawler, 
-            brawlAccount.club.name, 
-            brawlAccount.color
-        ];
-        const insertResult = await pgClient.query(insertQuery, values);
-        console.log(insertResult.rows);
+    await pgClient.query('BEGIN');
+    try {
+        const checkQuery = "SELECT * FROM BrawlAccounts WHERE tag = $1;";
+        const checkResult = await pgClient.query(checkQuery, [brawlAccount.tag]);
+        if (checkResult.rows.length === 0) {
+            const insertQuery = `
+                INSERT INTO BrawlAccounts (name, tag, icon, trophies, highestTrophies, expLevel, totalVictories, victories, soloVictories, duoVictories, bestRoboRumbleTime, bestTimeAsBigBrawler, club, color) 
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+            `;
+            const values = [
+                brawlAccount.name, 
+                brawlAccount.tag, 
+                brawlAccount.icon, 
+                brawlAccount.trophies, 
+                brawlAccount.highestTrophies, 
+                brawlAccount.expLevel, 
+                brawlAccount.totalVictories, 
+                brawlAccount.victories, 
+                brawlAccount.soloVictories, 
+                brawlAccount.duoVictories, 
+                brawlAccount.bestRoboRumbleTime, 
+                brawlAccount.bestTimeAsBigBrawler, 
+                brawlAccount.club.name, 
+                brawlAccount.color
+            ];
+            await pgClient.query(insertQuery, values);
+        }
+        await pgClient.query('COMMIT');
+    } catch (e) {
+        await pgClient.query('ROLLBACK');
+        throw e;
     }
 }
 //Port set to 10000
