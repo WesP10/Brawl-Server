@@ -81,14 +81,10 @@ function addToDB(brawlAccount){
     }
 }
 async function checkIfDoesNotExists(value){
-    var sqlQuery = "SELECT * FROM BrawlAccounts WHERE tag = "+value+";";
+    var sqlQuery = "SELECT * FROM BrawlAccounts WHERE tag = '"+value+"';";
     pgClient.query(sqlQuery, function(err, result){
         if(err) throw err;
-        if(result.rows.length > 0){
-            return false;
-        } else {
-            return true;
-        }
+        return result.rows.length === 0;
     });
 }
 //Port set to 10000
