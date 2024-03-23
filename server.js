@@ -15,7 +15,7 @@ pgClient.connect();
 const client = new BrawlStars.Client(token);
 
 app.use(cors({
-    origin: 'http://127.0.0.1:5500' // replace with your client's origin
+    origin: 'http://127.0.0.1:5500'
   }));
 class BrawlAccount {
     constructor(name, tag, icon, trophies, highestTrophies, expLevel, totalVictories, victories, soloVictories, duoVictories, bestRoboRumbleTime, bestTimeAsBigBrawler, club, color){
@@ -64,7 +64,7 @@ app.get('/stats/:playerId', async(req, res)=>{
     });
 });
 app.get('/stats/all', function(req, res){
-    var sqlQuery = "SELECT * FROM stats";
+    var sqlQuery = "SELECT * FROM BrawlAccounts;";
     pgClient.query(sqlQuery, function(err, result){
         if(err) throw err;
         console.log(result.rows);
