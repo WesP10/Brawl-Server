@@ -64,13 +64,17 @@ app.get('/stats/all', function(req, res){
     });
 });
 app.get('/stats/add/:playerId', async(req, res) => {
-    playerId = '#'+req.params.playerId;
-    console.log(req.params.playerId);
-    await getPlayerStats().then(stats => {
-        let brawlAccount = new BrawlAccount(stats.name, stats.tag, stats.icon, stats.trophies, stats.highestTrophies, stats.expLevel, stats.totalVictories, stats.trioVictories, stats.soloVictories, stats.duoVictories, stats.bestRoboRumbleTime, stats.bestTimeAsBigBrawler, stats.club, stats.nameColor);
-        addToDB(brawlAccount);
-        res.send(JSON.stringify(brawlAccount));
-    });
+    try {
+        playerId = '#'+req.params.playerId;
+        console.log(req.params.playerId);
+        await getPlayerStats().then(stats => {
+            let brawlAccount = new BrawlAccount(stats.name, stats.tag, stats.icon, stats.trophies, stats.highestTrophies, stats.expLevel, stats.totalVictories, stats.trioVictories, stats.soloVictories, stats.duoVictories, stats.bestRoboRumbleTime, stats.bestTimeAsBigBrawler, stats.club, stats.nameColor);
+            addToDB(brawlAccount);
+            res.send(JSON.stringify(brawlAccount));
+        });
+    } catch (err) {
+        next(err);
+    }
 });
 function addToDB(brawlAccount){
     var sqlQuery = "INSERT INTO BrawlAccounts (name, tag, icon, trophies, highestTrophies, expLevel, totalVictories, victories, soloVictories, duoVictories, bestRoboRumbleTime, bestTimeAsBigBrawler, club, color) VALUES ('"+brawlAccount.name+"', '"+brawlAccount.tag+"', '"+brawlAccount.icon+"', "+brawlAccount.trophies+", "+brawlAccount.highestTrophies+", "+brawlAccount.expLevel+", "+brawlAccount.totalVictories+", "+brawlAccount.victories+", "+brawlAccount.soloVictories+", "+brawlAccount.duoVictories+", "+brawlAccount.bestRoboRumbleTime+", "+brawlAccount.bestTimeAsBigBrawler+", '"+brawlAccount.club.name+"', '"+brawlAccount.color+"')";
