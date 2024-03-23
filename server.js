@@ -73,6 +73,7 @@ app.get('/stats/add/:playerId', async(req, res) => {
             res.send(JSON.stringify(brawlAccount));
         });
     } catch (err) {
+        console.log(err);
         next(err);
     }
 });
