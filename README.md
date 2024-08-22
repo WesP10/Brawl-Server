@@ -1,6 +1,6 @@
 # Brawl Stars Node.js Server
 
-This is a Node.js server for the BrawlSTars application. It provides endpoints to fetch player stats and all stats from a personal MySQL database and Brawl Stars API.
+This is a Node.js server for the BrawlStars application. It provides endpoints to fetch player stats and all stats from a personal MySQL database and Brawl Stars API.
 
 ## Getting Started
 
