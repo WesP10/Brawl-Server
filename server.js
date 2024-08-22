@@ -4,12 +4,17 @@
 const Pool = require('pg');
 const express = require('express');
 const BrawlStars = require("brawlstars.js");
+//Cors is not fun
 const cors = require('cors');
 require('dotenv').config();
 const app = express();
 
 const token = process.env.BRAWLSTARS_TOKEN;
 let playerId = '#2JOL2OQQR';
+/*Must Provide Own API Key
+  Establishing connection with unique authentication token
+  Client is then created with connection
+*/
 var connectionString = process.env.CONNECTIONSTRING;
 var pgClient = new Pool.Client(connectionString);
 pgClient.connect();
@@ -33,10 +38,12 @@ class BrawlAccount {
         this.color = color;
     }
 }
+//Retrieves player statistics with id given from global variable
 async function getPlayerStats(){
     let player = await client.getPlayer(playerId);
     return player;
 }
+//Returns player's stats in JSON format
 app.get('/stats/:playerId', async(req, res)=>{
     playerId = '#'+req.params.playerId;
     console.log(req.params.playerId);
@@ -45,6 +52,7 @@ app.get('/stats/:playerId', async(req, res)=>{
         res.send(JSON.stringify(brawlAccount));
     });
 });
+//Returns all players stats in the database without duplicates
 app.get('/all', function(req, res){
     var sqlQuery = "SELECT DISTINCT * FROM BrawlAccounts;";
     pgClient.query(sqlQuery, function(err, result){
@@ -52,6 +60,7 @@ app.get('/all', function(req, res){
         res.send(result.rows);
     });
 });
+//Adds a players stats and ID to the database
 app.get('/stats/add/:playerId', async(req, res) => {
     playerId = '#'+req.params.playerId;
     console.log(req.params.playerId);
@@ -61,6 +70,7 @@ app.get('/stats/add/:playerId', async(req, res) => {
         res.send(JSON.stringify(brawlAccount));
      });
 });
+//Adds Brawl Stars Account Object to database
 async function addToDB(brawlAccount) {
     await pgClient.query('BEGIN');
     try {
